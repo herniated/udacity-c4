@@ -22,7 +22,8 @@ const imagesBucket = process.env.IMAGES_S3_BUCKET
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   
   const newTodo: CreateTodoRequest = JSON.parse(event.body)
-  logger.info(newTodo)
+
+  logger.info("requesting to create" + newTodo)
 
   const itemId = uuid.v4()
 
@@ -31,6 +32,8 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   const createdAt = new Date().toISOString()
 
   const attachmentUrl = 'https://'+imagesBucket+'.s3.amazonaws.com/' + itemId
+
+  logger.info("attachment URL " + attachmentUrl)
 
   const newItem = {
     todoId: itemId,
@@ -41,10 +44,14 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
     ...newTodo
   }
 
+  logger.info("attempting to create" + newItem)
+
   await docClient.put({
     TableName: todosTable,
     Item: newItem
   }).promise()
+
+  logger.info("item created")
 
   return {
     statusCode: 201,

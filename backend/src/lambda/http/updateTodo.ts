@@ -17,7 +17,7 @@ const todosTable = process.env.TODOS_TABLE
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   
   const todoId = event.pathParameters.todoId
-  logger.info(todoId)
+  logger.info("requesting update of item " + todoId)
 
   const updatedTodo: UpdateTodoRequest = JSON.parse(event.body)  
   logger.info(updatedTodo)
@@ -35,6 +35,8 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
       "#name": "name"
     }
   }).promise()
+
+  logger.info("item updated")
 
   return {
     statusCode: 204,

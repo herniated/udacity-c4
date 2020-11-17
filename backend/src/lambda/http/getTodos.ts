@@ -4,7 +4,11 @@ import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } f
 
 import { getUserId } from '../utils'
 
+import { createLogger } from '../../utils/logger'
+
 const AWS = require('aws-sdk')
+
+const logger = createLogger('http')
 
 const docClient = new AWS.DynamoDB.DocumentClient()
 
@@ -13,6 +17,8 @@ const todosTable = process.env.TODOS_TABLE
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
 
   const userId = getUserId(event)
+
+  logger.info("get items for user " + userId)
 
   const result = await docClient.query({
     TableName: todosTable,
@@ -24,6 +30,8 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   }).promise()
  
   const items = result.Items
+
+  logger.info("items retrieved")
 
   //const result = await docClient.scan({TableName: todosTable}).promise()
   //const items = result.Items

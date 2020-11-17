@@ -16,12 +16,14 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
   
   const todoId = event.pathParameters.todoId
 
-  logger.info(todoId)
+  logger.info("requesting delete of " + todoId)
 
   await docClient.delete({
     TableName: todosTable,
     Key: { todoId }
   }).promise()
+
+  logger.info("item deleted")
 
   return {
     statusCode: 204,
