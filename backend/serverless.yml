@@ -106,8 +106,6 @@ resources:
         KeySchema:
           - AttributeName: todoId
             KeyType: HASH
-          - AttributeName: userId
-            KeyType: RANGE
         GlobalSecondaryIndexes:
           - IndexName: userIndex
             KeySchema:
