@@ -6,7 +6,7 @@ This application will allow creating/removing/updating/fetching TODO items. Each
 
 ## Backend
 
-The backend has already been deployed.  The frontend has been configured to worj with the deployed backend.
+The backend has already been deployed.  The frontend has already been configured to work with the deployed backend.
 
 ## Frontend
 
