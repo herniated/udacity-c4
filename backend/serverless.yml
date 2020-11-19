@@ -32,7 +32,7 @@ functions:
     events:
       - http:
           method: get               
-          path: todos         
+          path: todos
           cors: true
           authorizer: Auth
 
@@ -117,6 +117,8 @@ resources:
             KeySchema:
               - AttributeName: userId
                 KeyType: HASH
+              - AttributeName: todoId
+                KeyType: RANGE
             Projection:
               ProjectionType: ALL 
         BillingMode: PAY_PER_REQUEST
