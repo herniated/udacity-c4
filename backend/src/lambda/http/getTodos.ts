@@ -1,20 +1,10 @@
-import 'source-map-support/register'
-
+//import 'source-map-support/register'
 import { APIGatewayProxyEvent, APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda'
-
 import { getUserId } from '../utils'
-
 import { createLogger } from '../../utils/logger'
-
-const AWS = require('aws-sdk')
-const AWSXRay = require('aws-xray-sdk')
-const XAWS = AWSXRay.captureAWS(AWS)
+import { getTodosByUser } from '../../businessLogic/todos'
 
 const logger = createLogger('http')
-
-const docClient = new XAWS.DynamoDB.DocumentClient()
-
-const todosTable = process.env.TODOS_TABLE
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
 
@@ -22,22 +12,10 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
 
   logger.info("get items for user " + userId)
 
-  const result = await docClient.query({
-    TableName: todosTable,
-    IndexName: 'userIndex',
-    KeyConditionExpression: 'userId = :userId',
-    ExpressionAttributeValues: {
-      ':userId': userId
-    }
-  }).promise()
- 
-  const items = result.Items
+  const items = await getTodosByUser(userId)
 
   logger.info("items retrieved")
-
-  //const result = await docClient.scan({TableName: todosTable}).promise()
-  //const items = result.Items
-
+  
   return {
     statusCode: 200,
     headers: {
