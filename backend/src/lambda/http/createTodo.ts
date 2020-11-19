@@ -8,12 +8,14 @@ import { createLogger } from '../../utils/logger'
 import { getUserId } from '../utils'
 
 const AWS = require('aws-sdk')
+const AWSXRay = require('aws-xray-sdk')
+const XAWS = AWSXRay.captureAWS(AWS)
 
 const uuid = require('uuid')
 
 const logger = createLogger('http')
 
-const docClient = new AWS.DynamoDB.DocumentClient()
+const docClient = new XAWS.DynamoDB.DocumentClient()
 
 const todosTable = process.env.TODOS_TABLE
 

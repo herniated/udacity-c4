@@ -7,6 +7,8 @@ import { createLogger } from '../../utils/logger'
 const logger = createLogger('http')
 
 const AWS = require('aws-sdk')
+const AWSXRay = require('aws-xray-sdk')
+const XAWS = AWSXRay.captureAWS(AWS)
 
 export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
   
@@ -16,7 +18,7 @@ export const handler: APIGatewayProxyHandler = async (event: APIGatewayProxyEven
 
   const imagesBucket = process.env.IMAGES_S3_BUCKET
 
-  const s3 = new AWS.S3({
+  const s3 = new XAWS.S3({
     signatureVersion: 'v4' // Use Sigv4 algorithm
   })
 
